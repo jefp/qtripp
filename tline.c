@@ -40,7 +40,7 @@
 #include "ignores.h"
 
 #define MAXLINELEN	(8192 * 2)
-#define QOS 		2
+#define QOS 		0
 #define NAGIOSREPORT	"nagios/qtripp"
 
 /*
