@@ -614,10 +614,22 @@ int main(int argc, char **argv)
                                 );
 
 	}
+	if  (!strcmp(cf.protocol_version, "mqttv31")){
+		cf.protocol_version=MQTT_PROTOCOL_V31;
 
-	rc_opts_sets = mosquitto_opts_set(mosq, MOSQ_OPT_PROTOCOL_VERSION, MQTT_PROTOCOL_V311);
+	} else if(!strcmp(cf.protocol_version, "mqttv311")){
+		cf.protocol_version=MQTT_PROTOCOL_V311;
+	}
+	else 
+	{
+		   xlog(ud, "Error: Invalid protocol version argument given.\n\n");
+           exit(3);
 
-	if (!rc_opts_sets) {
+	}
+
+	rc = mosquitto_opts_set(mosq, MOSQ_OPT_PROTOCOL_VERSION, cf.protocol_version);
+
+	if (!rc) {
 		fprintf(stderr, "Error: mosquitto_opts_set() error.\n");
 		mosquitto_lib_cleanup();
 		return (-1);
@@ -634,7 +646,7 @@ int main(int argc, char **argv)
 
 	udata.cf  = &cf;
 
-	if (argc == 2) {
+	if (argc == 2) {qm_trace
 		FILE *fp = fopen(argv[1], "r");
 
 		if (fp == NULL) {
