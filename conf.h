@@ -58,6 +58,7 @@ typedef struct config {
 	const char *certfile;
 	const char *keyfile;
 	const char *client_id;
+	const char *protocol_version;
 	JsonNode *subscriptions;
 	struct my_device *devices;
 	const char *extra_json;
