@@ -40,7 +40,7 @@
 #include "ignores.h"
 
 #define MAXLINELEN	(8192 * 2)
-#define QOS 		0
+#define QOS 		1
 #define NAGIOSREPORT	"nagios/qtripp"
 
 /*
@@ -49,7 +49,7 @@
  * DBGOUT == 2 means print "devs"
  * DBGOUT == 3 means print "GTHBD"
  */
-#define DBGOUT 3
+#define DBGOUT 0
 #define DLOG(lev, fmt, ...)  if ((lev) == DBGOUT) fprintf(stderr, fmt, __VA_ARGS__)
 
 struct my_stat {
@@ -298,7 +298,7 @@ void transmit_json(struct udata *ud, char *imei, JsonNode *obj)
 	if ((js = json_encode(obj)) != NULL) {
 		xlog(ud, "PUBLISH: %s %s\n", topic, js);
 		STATSD_INC(ud->cf->sd, "mqtt.message.publish");
-		pub(ud, topic, js, true);
+		pub(ud, topic, js, false);
 
 //		if (ud->cocorun) mg_printf(ud->coco, "%s", js);	// FIXME remove
 //		fprintf(stderr, "@@@@@@@@@ %d\n", ud->coco->sock);
@@ -309,7 +309,7 @@ void transmit_json(struct udata *ud, char *imei, JsonNode *obj)
 	if (extra != NULL)
 		json_delete(extra);
 
-}
+}fpib
 
 /*
  * Find `elem' in the JSON `obj'. In particular find NUMBERs and convert
