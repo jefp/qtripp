@@ -67,6 +67,7 @@ typedef struct config {
 	const char *datadir;
 	const char *namesdir;
 	const char *rawtopic;
+	int protocol;
 #ifdef STATSD
 	statsd_link *sd;
 	const char *statsdhost;

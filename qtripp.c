@@ -615,10 +615,10 @@ int main(int argc, char **argv)
 
 	}
 	if  (!strcmp(cf.protocol_version, "mqttv31")){
-		cf.protocol_version=MQTT_PROTOCOL_V31;
+		cf.protocol=MQTT_PROTOCOL_V31;
 
 	} else if(!strcmp(cf.protocol_version, "mqttv311")){
-		cf.protocol_version=MQTT_PROTOCOL_V311;
+		cf.protocol=MQTT_PROTOCOL_V311;
 	}
 	else 
 	{
@@ -627,7 +627,7 @@ int main(int argc, char **argv)
 
 	}
 
-	rc = mosquitto_opts_set(mosq, MOSQ_OPT_PROTOCOL_VERSION, cf.protocol_version);
+	rc = mosquitto_opts_set(mosq, MOSQ_OPT_PROTOCOL_VERSION, &(cf.protocol));
 
 	if (!rc) {
 		fprintf(stderr, "Error: mosquitto_opts_set() error.\n");
