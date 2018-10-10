@@ -527,7 +527,7 @@ int main(int argc, char **argv)
 	struct mg_bind_opts bind_opts;
 	struct udata udata, *ud = &udata;
 	struct mosquitto *mosq;
-	bool clean_session = false;
+	bool clean_session = true;
 	const char *e = NULL;
 	struct my_device *d, *tmp;
 	int rc;
@@ -538,7 +538,7 @@ int main(int argc, char **argv)
         }
 
 	memset(&udata, 0, sizeof(udata));
-        ud->debugging           = true;
+    ud->debugging           = true;
 	ud->cf			= &cf;
 	ud->logfp		= fopen(cf.logfile, "a");
 
@@ -566,7 +566,8 @@ int main(int argc, char **argv)
 #endif
 
 	mosquitto_lib_init();
-
+    xlog(ud, "Connecting to client_id  %s\n",cf.client_id);
+	
 	mosq = mosquitto_new(cf.client_id, clean_session, &udata);
 	if (!mosq) {
 		fprintf(stderr, "Error: mosquitto_new() says 'out of memory'.\n");
@@ -588,6 +589,9 @@ int main(int argc, char **argv)
 	mosquitto_message_callback_set(mosq, on_message);
 	mosquitto_connect_callback_set(mosq, on_connect);
 
+
+    xlog(ud, "Connecting to client_id  %s\n",cf.client_id);
+	
 	if (cf.cafile && *cf.cafile) {
 
                         rc = mosquitto_tls_set(mosq,
@@ -611,6 +615,13 @@ int main(int argc, char **argv)
 
 	}
 
+	rc_opts_sets = mosquitto_opts_set(mosq, MOSQ_OPT_PROTOCOL_VERSION, MQTT_PROTOCOL_V311);
+
+	if (!rc_opts_sets) {
+		fprintf(stderr, "Error: mosquitto_opts_set() error.\n");
+		mosquitto_lib_cleanup();
+		return (-1);
+	}
 
 	rc = mosquitto_connect_async(mosq, cf.host, cf.port, 60);
 

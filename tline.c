@@ -49,7 +49,7 @@
  * DBGOUT == 2 means print "devs"
  * DBGOUT == 3 means print "GTHBD"
  */
-#define DBGOUT 0
+#define DBGOUT 3
 #define DLOG(lev, fmt, ...)  if ((lev) == DBGOUT) fprintf(stderr, fmt, __VA_ARGS__)
 
 struct my_stat {
