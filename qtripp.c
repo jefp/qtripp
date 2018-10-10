@@ -46,6 +46,7 @@
 static config cf = {
         .host           = "localhost",
         .port           = 1883,
+		.protocol		= MQTT_PROTOCOL_V311,
 #ifdef STATSD
 	.statsdhost	= "127.0.0.1",
 #endif
@@ -498,6 +499,9 @@ void on_connect(struct mosquitto *mosq, void *userdata, int rc)
 	char err[1024];
 	JsonNode *j;
 	int mid;
+	xlog(ud, "connecting to MQTT broker on %s:%d Error: %s\n",
+				ud->cf->host, ud->cf->port,
+				err);
 	if (rc) {
 		if (rc == MOSQ_ERR_ERRNO) {
 			strerror_r(errno, err, 1024);
@@ -614,6 +618,7 @@ int main(int argc, char **argv)
                                 );
 
 	}
+	printf("ok");
 	if  (!strcmp(cf.protocol_version, "mqttv31")){
 		cf.protocol=MQTT_PROTOCOL_V31;
 
@@ -627,15 +632,9 @@ int main(int argc, char **argv)
 
 	}
 
-	rc = mosquitto_opts_set(mosq, MOSQ_OPT_PROTOCOL_VERSION, &(cf.protocol));
+	mosquitto_opts_set(mosq, MOSQ_OPT_PROTOCOL_VERSION, &(cf.protocol));
 
-	if (!rc) {
-		fprintf(stderr, "Error: mosquitto_opts_set() error.\n");
-		mosquitto_lib_cleanup();
-		return (-1);
-	}
-
-	rc = mosquitto_connect_async(mosq, cf.host, cf.port, 60);
+	rc = mosquitto_connect(mosq, cf.host, cf.port, 60);
 
 	udata.mosq	= mosq;
 	udata.datalog 	= 0;

@@ -84,6 +84,7 @@ int ini_handler(void *cf, const char *section, const char *key, const char *val)
 		if (_eq("capath"))      c->capath = strdup(val);
 		if (_eq("certfile"))    c->certfile = strdup(val);
 		if (_eq("keyfile"))     c->keyfile = strdup(val);
+		if (_eq("protocol_version")) c->protocol_version = strdup(val);
 		if (_eq("port"))	c->port = atoi(val);
 		if (_eq("reporttopic"))     c->reporttopic = strdup(val);
 		if (_eq("rawtopic"))     c->rawtopic = strdup(val);
