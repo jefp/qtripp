@@ -309,7 +309,7 @@ void transmit_json(struct udata *ud, char *imei, JsonNode *obj)
 	if (extra != NULL)
 		json_delete(extra);
 
-}fpib
+}
 
 /*
  * Find `elem' in the JSON `obj'. In particular find NUMBERs and convert
