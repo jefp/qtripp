@@ -613,7 +613,7 @@ int main(int argc, char **argv)
 
                         mosquitto_tls_opts_set(mosq,
                                 SSL_VERIFY_PEER,
-                                NULL,                   /* tls_version: "tlsv1.2", "tlsv1" */
+                                "tlv1.2",                   /* tls_version: "tlsv1.2", "tlsv1" */
                                 NULL                    /* ciphers */
                                 );
 
