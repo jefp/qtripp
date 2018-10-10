@@ -646,7 +646,7 @@ int main(int argc, char **argv)
 
 	udata.cf  = &cf;
 
-	if (argc == 2) {qm_trace
+	if (argc == 2) {
 		FILE *fp = fopen(argv[1], "r");
 
 		if (fp == NULL) {
