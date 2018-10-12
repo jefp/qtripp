@@ -527,7 +527,7 @@ void on_connect(struct mosquitto *mosq, void *userdata, int rc)
 int main(int argc, char **argv)
 {
 	struct mg_mgr mgr;
-	struct mg_connection *c;
+	struct mg_connection *c, *w;
 	struct mg_bind_opts bind_opts;
 	struct udata udata, *ud = &udata;
 	struct mosquitto *mosq;
@@ -672,11 +672,17 @@ int main(int argc, char **argv)
 	xlog(ud, "Listening for GPRS on port %s\n", cf.listen_port);
 
 	c = mg_bind_opt(&mgr, cf.listen_port, ev_handler, bind_opts);
+	w = mg_bind_opt(&mgr, strcpy("udp://0.0.0.0:", cf.listen_port), ev_handler, bind_opts);
+
 	if (c == NULL) {
 		xlog(ud, "Error starting server: %s\n", *bind_opts.error_string);
 		exit(1);
 	}
 
+	if (w == NULL) {
+		xlog(ud, "Error starting UDP server: %s\n", *bind_opts.error_string);
+		exit(1);
+	}
 
 	udata.mgr = &mgr;
 	mgr.user_data = &udata; // experiment
